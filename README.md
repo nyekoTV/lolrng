@@ -1,20 +1,20 @@
-# LoL Roulette RNG — dev a la zeub edition
+# LoL Roulette RNG — giga troll edition v4
 
-Bienvenue dans le projet le plus sérieux du monde : une roulette RNG pour tirer un champion LoL et un rôle.
-
-Est-ce utile ? Pas vraiment.  
-Est-ce stylé ? Un peu.  
-Est-ce que ça peut ruiner une draft entre potes ? Absolument.
+Tu voulais juste savoir quoi jouer.
+Maintenant le site décide aussi ton rôle, ton stuff, tes runes et tes sorts d’invocateur.
+Si tu perds ta game après ça, assume un peu.
 
 ## Ce que ça fait
 
 - Roulette façon ouverture de coffre.
-- Images des champions téléchargées automatiquement pendant le build.
-- RNG du champion.
-- RNG du rôle : Top, Jungle, Mid, Bot / ADC, Support.
+- RNG champion.
+- RNG rôle.
+- RNG stuff avec images.
+- RNG runes avec images.
+- RNG sorts d’invocateur avec images.
 - Son de case opening.
-- Contrôle du son : activer, couper, volume, test.
-- Footer obligatoire : `dev a la zeub par nyeko`.
+- Gestion du son : activer, couper, volume, test.
+- Footer légalement discutable : `dev a la zeub par nyeko`.
 
 ## Installation
 
@@ -22,51 +22,40 @@ Est-ce que ça peut ruiner une draft entre potes ? Absolument.
 npm install
 ```
 
-## Lancer le build
+## Build
 
 ```bash
 npm run build
 ```
 
-Le dossier généré sera :
+Le build télécharge automatiquement les assets LoL utiles via Riot Data Dragon, puis génère le dossier :
 
 ```txt
 dist/
 ```
 
-C'est ce dossier que Netlify doit publier.
+C’est ce dossier que Netlify doit publier.
 
 ## Déploiement Netlify
 
-La méthode propre :
+La méthode propre, celle qui t’évite de faire n’importe quoi :
 
 1. Mets le projet sur GitHub.
-2. Va sur Netlify.
-3. Import ton repo.
-4. Netlify lit normalement `netlify.toml` tout seul.
-5. Vérifie quand même :
+2. Importe le repo dans Netlify.
+3. Vérifie :
 
 ```txt
 Build command: npm run build
 Publish directory: dist
 ```
 
-## Tester en local
+## Dev local
 
 ```bash
 npm run dev
 ```
 
-Si ça marche pas, c'est probablement pas la faute de Teemo, mais on va dire que si.
+## Remarque essentielle
 
-## Notes importantes
-
-Le tirage est fait côté navigateur. Pour un vrai système de loot sérieux, il faudrait faire le RNG côté serveur.
-
-Mais ici, c'est pour le fun. Donc ça passe.
-
-## Crédits
-
-Développé avec beaucoup trop de confiance et pas assez de sommeil.
-
-**dev a la zeub par nyeko**
+Oui, les builds sont RNG.
+Non, ce n’est pas une excuse valable pour first-timer un pick troll en ranked.

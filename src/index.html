@@ -13,13 +13,13 @@
     <header class="hero">
       <p class="eyebrow">Ouverture du coffre</p>
       <h1>Roulette RNG LoL</h1>
-      <p class="subtitle">Ouvre le coffre, tire un champion, puis laisse le destin choisir ton rôle.</p>
+      <p class="subtitle">Ouvre le coffre, tire un champion, puis laisse le destin décider ton rôle, ton stuff, tes runes et tes sorts d’invocateur.</p>
     </header>
 
     <section class="panel sound-panel" aria-label="Gestion du son">
       <div>
         <h2>Son</h2>
-        <p>Gère le bruit d’ouverture sans exploser tes oreilles.</p>
+        <p>Gère le bruit d’ouverture sans te détruire les tympans.</p>
       </div>
 
       <div class="sound-controls">
@@ -66,15 +66,49 @@
       </div>
 
       <div class="result-card" id="resultCard" hidden>
-        <img id="resultImage" src="" alt="" />
-        <div>
-          <p class="result-label">Résultat</p>
-          <h2 id="resultName"></h2>
-          <p id="resultTitle"></p>
-          <div class="result-tags">
-            <span id="resultRarity"></span>
-            <span id="resultRole"></span>
+        <div class="result-main">
+          <img id="resultImage" src="" alt="" />
+          <div class="result-main-content">
+            <p class="result-label">Résultat RNG</p>
+            <h2 id="resultName"></h2>
+            <p id="resultTitle"></p>
+            <div class="result-tags">
+              <span id="resultRarity"></span>
+              <span id="resultRole"></span>
+            </div>
           </div>
+        </div>
+
+        <div class="loadout-grid">
+          <section class="result-box role-box">
+            <div class="section-head">
+              <h3>Rôle RNG</h3>
+            </div>
+            <div id="roleDisplay" class="role-display"></div>
+          </section>
+
+          <section class="result-box summoner-box">
+            <div class="section-head">
+              <h3>Sorts d’invocateur</h3>
+            </div>
+            <div id="summonerGrid" class="icon-grid compact-grid"></div>
+          </section>
+
+          <section class="result-box full-span">
+            <div class="section-head">
+              <h3>Stuff RNG</h3>
+            </div>
+            <div id="itemsGrid" class="icon-grid items-grid"></div>
+          </section>
+
+          <section class="result-box full-span">
+            <div class="section-head">
+              <h3>Runes RNG</h3>
+              <div id="runePageMeta" class="rune-page-meta"></div>
+            </div>
+            <div id="runePrimaryStyle" class="rune-style-strip"></div>
+            <div id="runesGrid" class="icon-grid runes-grid"></div>
+          </section>
         </div>
       </div>
     </section>
@@ -87,6 +121,7 @@
   <audio id="caseAudio" src="assets/sounds/case-opening.wav" preload="auto"></audio>
 
   <script src="champion-data.js"></script>
+  <script src="game-data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

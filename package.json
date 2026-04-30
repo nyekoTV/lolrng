@@ -1,7 +1,7 @@
 {
   "name": "lol-roulette-rng-netlify-ready",
-  "version": "3.0.0",
-  "description": "Roulette RNG façon case opening, prête pour Netlify.",
+  "version": "4.0.0",
+  "description": "Roulette RNG LoL avec champion, rôle, stuff, runes et summoners, prête pour Netlify.",
   "private": true,
   "type": "module",
   "scripts": {
