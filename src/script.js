@@ -1,5 +1,5 @@
 const champions = window.CHAMPIONS_DATA || [];
-const buildData = window.GAME_DATA || { roleConfigs: {}, items: {}, summoners: {}, runes: {}, roleOrder: [] };
+const buildData = window.GAME_DATA || { roleConfigs: {}, items: {}, summoners: {}, runes: {}, runeStyles: {}, roleOrder: [], modeOrder: [] };
 
 const rarityRates = [
   { rarity: "common", chance: 39 },
@@ -18,6 +18,7 @@ const resultName = document.querySelector("#resultName");
 const resultTitle = document.querySelector("#resultTitle");
 const resultRarity = document.querySelector("#resultRarity");
 const resultRole = document.querySelector("#resultRole");
+const resultMode = document.querySelector("#resultMode");
 const roleDisplay = document.querySelector("#roleDisplay");
 const itemsGrid = document.querySelector("#itemsGrid");
 const summonerGrid = document.querySelector("#summonerGrid");
@@ -28,6 +29,20 @@ const caseAudio = document.querySelector("#caseAudio");
 const soundToggle = document.querySelector("#soundToggle");
 const volumeRange = document.querySelector("#volumeRange");
 const testSoundBtn = document.querySelector("#testSoundBtn");
+const modeFilters = document.querySelector("#modeFilters");
+const rerollRoleBtn = document.querySelector("#rerollRoleBtn");
+const rerollStuffBtn = document.querySelector("#rerollStuffBtn");
+const rerollRunesBtn = document.querySelector("#rerollRunesBtn");
+const rerollSummonersBtn = document.querySelector("#rerollSummonersBtn");
+
+const state = {
+  mode: "SR",
+  champion: null,
+  roleConfig: null,
+  items: [],
+  summoners: [],
+  runePage: null
+};
 
 let spinning = false;
 
@@ -55,10 +70,22 @@ function pickChampion() {
   return randomItem(pool.length ? pool : champions);
 }
 
+function getActiveMode() {
+  return state.mode || "SR";
+}
+
+function getRoleNames() {
+  return buildData.roleOrder || Object.keys(buildData.roleConfigs || {});
+}
+
 function pickRoleConfig() {
-  const roleNames = buildData.roleOrder || Object.keys(buildData.roleConfigs || {});
-  const roleName = randomItem(roleNames);
+  const roleName = randomItem(getRoleNames());
   return buildData.roleConfigs[roleName];
+}
+
+function getModePool(roleConfig, modeName = getActiveMode()) {
+  const modes = roleConfig?.modes || {};
+  return modes[modeName] || modes.SR || { itemPresets: [], summonerCombos: [], runePages: [] };
 }
 
 function createChampionCard(champion) {
@@ -82,7 +109,9 @@ function createAssetTile(asset, extraClass = "") {
   tile.className = `asset-tile ${extraClass}`.trim();
 
   tile.innerHTML = `
-    <img src="${asset.image}" alt="${asset.name}">
+    <div class="asset-image-wrap">
+      <img src="${asset.image}" alt="${asset.name}">
+    </div>
     <div class="asset-meta">
       <strong>${asset.name}</strong>
       ${asset.subtitle ? `<small>${asset.subtitle}</small>` : ""}
@@ -103,6 +132,10 @@ function createStyleBadge(style) {
     </div>
   `;
   return badge;
+}
+
+function clearNode(node) {
+  node.innerHTML = "";
 }
 
 function fillIdleRoulette() {
@@ -140,7 +173,7 @@ function playCaseSound() {
   caseAudio.volume = Number(volumeRange.value) / 100;
 
   caseAudio.play().catch(() => {
-    // Bloqué navigateur si aucun clic utilisateur.
+    // Navigateur relou.
   });
 }
 
@@ -157,26 +190,29 @@ function stopCaseSoundSoftly() {
   }, 80);
 }
 
-function clearNode(node) {
-  node.innerHTML = "";
+function pickItems(roleConfig) {
+  const modePool = getModePool(roleConfig);
+  const presetIds = randomItem(modePool.itemPresets || []);
+  return (presetIds || []).map((id) => buildData.items[id]).filter(Boolean);
 }
 
-function pickLoadout(roleConfig) {
-  const itemPresetIds = randomItem(roleConfig.itemPresets || []);
-  const summonerIds = randomItem(roleConfig.summonerCombos || []);
-  const runePage = randomItem(roleConfig.runePages || []);
+function pickSummoners(roleConfig) {
+  const modePool = getModePool(roleConfig);
+  const comboIds = randomItem(modePool.summonerCombos || []);
+  return (comboIds || []).map((id) => buildData.summoners[id]).filter(Boolean);
+}
+
+function pickRunePage(roleConfig) {
+  const modePool = getModePool(roleConfig);
+  const runePage = randomItem(modePool.runePages || []);
+  if (!runePage) return null;
 
   return {
-    role: roleConfig,
-    items: (itemPresetIds || []).map((id) => buildData.items[id]).filter(Boolean),
-    summoners: (summonerIds || []).map((id) => buildData.summoners[id]).filter(Boolean),
-    runePage: {
-      ...runePage,
-      primaryStyle: buildData.runeStyles[runePage.primaryStyle],
-      secondaryStyle: buildData.runeStyles[runePage.secondaryStyle],
-      primaryRunes: (runePage.primary || []).map((id) => buildData.runes[id]).filter(Boolean),
-      secondaryRunes: (runePage.secondary || []).map((id) => buildData.runes[id]).filter(Boolean)
-    }
+    ...runePage,
+    primaryStyle: buildData.runeStyles[runePage.primaryStyle],
+    secondaryStyle: buildData.runeStyles[runePage.secondaryStyle],
+    primaryRunes: (runePage.primary || []).map((id) => buildData.runes[id]).filter(Boolean),
+    secondaryRunes: (runePage.secondary || []).map((id) => buildData.runes[id]).filter(Boolean)
   };
 }
 
@@ -205,6 +241,12 @@ function showSummoners(summoners) {
 function showRunes(runePage) {
   clearNode(runesGrid);
   clearNode(runePrimaryStyle);
+  clearNode(runePageMeta);
+
+  if (!runePage) {
+    runePageMeta.innerHTML = `<span>Aucune page disponible</span>`;
+    return;
+  }
 
   runePageMeta.innerHTML = `
     <span>${runePage.label || "Page RNG"}</span>
@@ -217,21 +259,31 @@ function showRunes(runePage) {
   runePage.secondaryRunes.forEach((rune) => runesGrid.appendChild(createAssetTile(rune, "rune-tile secondary-rune")));
 }
 
-function showResult(winner, roleConfig, loadout) {
-  resultImage.src = winner.image;
-  resultImage.alt = winner.name;
-  resultName.textContent = winner.name;
-  resultTitle.textContent = winner.title || "Champion débloqué";
-  resultRarity.textContent = `Rareté : ${winner.rarityLabel}`;
-  resultRarity.className = winner.rarity;
-  resultRole.textContent = `Rôle RNG : ${roleConfig.name}`;
+function renderState() {
+  if (!state.champion || !state.roleConfig) return;
 
-  showRole(roleConfig);
-  showItems(loadout.items);
-  showSummoners(loadout.summoners);
-  showRunes(loadout.runePage);
+  resultImage.src = state.champion.splash || state.champion.image;
+  resultImage.alt = state.champion.name;
+  resultName.textContent = state.champion.name;
+  resultTitle.textContent = state.champion.title || "Champion débloqué";
+  resultRarity.textContent = `Rareté : ${state.champion.rarityLabel}`;
+  resultRarity.className = state.champion.rarity;
+  resultRole.textContent = `Rôle RNG : ${state.roleConfig.name}`;
+  resultMode.textContent = `Filtre : ${getActiveMode()}`;
+
+  showRole(state.roleConfig);
+  showItems(state.items);
+  showSummoners(state.summoners);
+  showRunes(state.runePage);
 
   resultCard.hidden = false;
+}
+
+function resetLoadoutForRole() {
+  if (!state.roleConfig) return;
+  state.items = pickItems(state.roleConfig);
+  state.summoners = pickSummoners(state.roleConfig);
+  state.runePage = pickRunePage(state.roleConfig);
 }
 
 function spin() {
@@ -241,10 +293,11 @@ function spin() {
   openBtn.disabled = true;
   resultCard.hidden = true;
 
-  const winner = pickChampion();
-  const roleConfig = pickRoleConfig();
-  const loadout = pickLoadout(roleConfig);
-  const winnerIndex = buildRoulette(winner);
+  state.champion = pickChampion();
+  state.roleConfig = pickRoleConfig();
+  resetLoadoutForRole();
+
+  const winnerIndex = buildRoulette(state.champion);
 
   track.style.transition = "none";
   track.style.transform = "translateX(0px)";
@@ -262,7 +315,7 @@ function spin() {
     track.style.transform = `translateX(${finalTranslate}px)`;
 
     setTimeout(() => {
-      showResult(winner, roleConfig, loadout);
+      renderState();
       stopCaseSoundSoftly();
       openBtn.disabled = false;
       spinning = false;
@@ -270,7 +323,48 @@ function spin() {
   });
 }
 
+function applyMode(modeName) {
+  state.mode = modeName;
+
+  document.querySelectorAll(".mode-chip").forEach((button) => {
+    button.classList.toggle("active", button.dataset.mode === modeName);
+  });
+
+  if (state.champion && state.roleConfig) {
+    resetLoadoutForRole();
+    renderState();
+  }
+}
+
+function rerollRoleOnly() {
+  if (!state.champion) return;
+  state.roleConfig = pickRoleConfig();
+  renderState();
+}
+
+function rerollStuffOnly() {
+  if (!state.roleConfig) return;
+  state.items = pickItems(state.roleConfig);
+  renderState();
+}
+
+function rerollRunesOnly() {
+  if (!state.roleConfig) return;
+  state.runePage = pickRunePage(state.roleConfig);
+  renderState();
+}
+
+function rerollSummonersOnly() {
+  if (!state.roleConfig) return;
+  state.summoners = pickSummoners(state.roleConfig);
+  renderState();
+}
+
 openBtn.addEventListener("click", spin);
+rerollRoleBtn.addEventListener("click", rerollRoleOnly);
+rerollStuffBtn.addEventListener("click", rerollStuffOnly);
+rerollRunesBtn.addEventListener("click", rerollRunesOnly);
+rerollSummonersBtn.addEventListener("click", rerollSummonersOnly);
 
 testSoundBtn.addEventListener("click", () => {
   playCaseSound();
@@ -288,4 +382,11 @@ soundToggle.addEventListener("change", () => {
   }
 });
 
+modeFilters.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-mode]");
+  if (!button) return;
+  applyMode(button.dataset.mode);
+});
+
 fillIdleRoulette();
+applyMode(state.mode);

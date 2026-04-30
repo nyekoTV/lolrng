@@ -1,20 +1,27 @@
-# LoL Roulette RNG — giga troll edition v4
+# LoL Roulette RNG — troll edition v5
 
-Tu voulais juste savoir quoi jouer.
-Maintenant le site décide aussi ton rôle, ton stuff, tes runes et tes sorts d’invocateur.
-Si tu perds ta game après ça, assume un peu.
+Tu voulais une roulette.
+Maintenant t’as un mini casino qui te choisit ton champion, ton rôle, ton stuff, tes runes et tes sorts d’invocateur.
+Si tu lances une ranked avec le filtre troll, faut pas venir pleurer.
 
-## Ce que ça fait
+## Ce qu’il y a dedans
 
-- Roulette façon ouverture de coffre.
-- RNG champion.
-- RNG rôle.
-- RNG stuff avec images.
-- RNG runes avec images.
-- RNG sorts d’invocateur avec images.
-- Son de case opening.
-- Gestion du son : activer, couper, volume, test.
-- Footer légalement discutable : `dev a la zeub par nyeko`.
+- roulette façon ouverture de coffre
+- RNG champion
+- RNG rôle
+- RNG stuff
+- RNG runes
+- RNG summoners
+- filtres `SR / ARAM / Fun / Troll`
+- boutons :
+  - reroll rôle
+  - reroll stuff
+  - reroll runes
+  - reroll summoners
+- son de case opening + panneau de gestion du son
+- images champions, items, runes et summoners
+- champion result avec une image plus propre
+- footer très sérieux : `dev a la zeub par nyeko`
 
 ## Installation
 
@@ -28,7 +35,7 @@ npm install
 npm run build
 ```
 
-Le build télécharge automatiquement les assets LoL utiles via Riot Data Dragon, puis génère le dossier :
+Le build télécharge automatiquement les assets utiles depuis Riot Data Dragon puis génère :
 
 ```txt
 dist/
@@ -38,24 +45,12 @@ C’est ce dossier que Netlify doit publier.
 
 ## Déploiement Netlify
 
-La méthode propre, celle qui t’évite de faire n’importe quoi :
+- Build command : `npm run build`
+- Publish directory : `dist`
 
-1. Mets le projet sur GitHub.
-2. Importe le repo dans Netlify.
-3. Vérifie :
+## Rappel de survie
 
-```txt
-Build command: npm run build
-Publish directory: dist
-```
-
-## Dev local
-
-```bash
-npm run dev
-```
-
-## Remarque essentielle
-
-Oui, les builds sont RNG.
-Non, ce n’est pas une excuse valable pour first-timer un pick troll en ranked.
+- `SR` : tentative de build cohérente.
+- `ARAM` : builds et summoners orientés ARAM.
+- `Fun` : off-meta mais encore jouable.
+- `Troll` : tu cherches la bagarre avec ton équipe.

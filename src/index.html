@@ -37,6 +37,20 @@
       </div>
     </section>
 
+    <section class="panel mode-panel" aria-label="Filtre de mode">
+      <div>
+        <h2>Filtre</h2>
+        <p>Choisis si tu veux une génération pour la SR, l’ARAM, du fun ou du pur troll.</p>
+      </div>
+
+      <div class="mode-filters" id="modeFilters">
+        <button class="mode-chip active" data-mode="SR" type="button">SR</button>
+        <button class="mode-chip" data-mode="ARAM" type="button">ARAM</button>
+        <button class="mode-chip" data-mode="Fun" type="button">Fun</button>
+        <button class="mode-chip" data-mode="Troll" type="button">Troll</button>
+      </div>
+    </section>
+
     <section class="rarity-bar" aria-label="Raretés">
       <div class="rarity-pill common">Commun <span>39%</span></div>
       <div class="rarity-pill rare">Rare <span>30%</span></div>
@@ -75,8 +89,16 @@
             <div class="result-tags">
               <span id="resultRarity"></span>
               <span id="resultRole"></span>
+              <span id="resultMode"></span>
             </div>
           </div>
+        </div>
+
+        <div class="reroll-bar">
+          <button id="rerollRoleBtn" class="reroll-btn" type="button">Reroll rôle</button>
+          <button id="rerollStuffBtn" class="reroll-btn" type="button">Reroll stuff</button>
+          <button id="rerollRunesBtn" class="reroll-btn" type="button">Reroll runes</button>
+          <button id="rerollSummonersBtn" class="reroll-btn" type="button">Reroll summoners</button>
         </div>
 
         <div class="loadout-grid">
