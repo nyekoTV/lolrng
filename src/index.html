@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Roulette RNG façon coffre CS pour champions League of Legends avec tirage du rôle." />
+  <title>LoL Roulette RNG</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="background-orb orb-one"></div>
+  <div class="background-orb orb-two"></div>
+
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon">◆</span>
+        <div>
+          <strong>LOL RNG</strong>
+          <small>Local Case Opening</small>
+        </div>
+      </div>
+
+      <div class="stats">
+        <span>💎 2 860</span>
+        <span>🟡 12 450</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Ouverture du coffre</p>
+      <h1>Roulette RNG</h1>
+      <p class="subtitle">Tire un champion et un rôle aléatoire.</p>
+    </section>
+
+    <section class="content-grid">
+      <aside class="panel rarities-panel">
+        <h2>Raretés</h2>
+        <div class="rarity-line common"><span></span> Commun <strong>39%</strong></div>
+        <div class="rarity-line rare"><span></span> Rare <strong>30%</strong></div>
+        <div class="rarity-line epic"><span></span> Épique <strong>20%</strong></div>
+        <div class="rarity-line legendary"><span></span> Légendaire <strong>10%</strong></div>
+        <div class="rarity-line mythic"><span></span> Mythique <strong>1%</strong></div>
+      </aside>
+
+      <section class="roulette-card">
+        <div class="roulette-header">
+          <div>
+            <h2>Coffre des champions</h2>
+            <p id="versionLabel">Images locales générées au build</p>
+          </div>
+          <button id="shufflePreviewBtn" class="secondary-button" type="button">Mélanger l'aperçu</button>
+        </div>
+
+        <div class="roulette-wrapper" id="rouletteWrapper" aria-label="Roulette de champions">
+          <div class="selector" aria-hidden="true"></div>
+          <div class="track" id="track"></div>
+        </div>
+
+        <div class="chest-zone" aria-hidden="true">
+          <div class="light-beam"></div>
+          <div class="chest">
+            <div class="chest-lid"></div>
+            <div class="chest-body"></div>
+            <div class="chest-gem">◆</div>
+          </div>
+        </div>
+
+        <div class="controls">
+          <button id="openBtn" class="primary-button" type="button">Ouvrir le coffre</button>
+          <div class="result" id="result">
+            <span class="muted">Clique sur le bouton pour lancer le tirage.</span>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="champions.generated.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

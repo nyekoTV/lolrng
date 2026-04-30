@@ -1,0 +1,12 @@
+{
+  "name": "lol-roulette-rng-netlify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Roulette RNG façon coffre CS pour champions League of Legends, déployable sur Netlify.",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
