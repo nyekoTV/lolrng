@@ -1,27 +1,33 @@
-# LoL Roulette RNG — troll edition v5
+# LoL Roulette RNG — full random v6
 
-Tu voulais une roulette.
-Maintenant t’as un mini casino qui te choisit ton champion, ton rôle, ton stuff, tes runes et tes sorts d’invocateur.
-Si tu lances une ranked avec le filtre troll, faut pas venir pleurer.
+Là on a arrêté de faire semblant que c’était équilibré.
 
-## Ce qu’il y a dedans
+Le mode `Troll` est remplacé par `Random`, et ce mode fait vraiment n’importe quoi :
 
-- roulette façon ouverture de coffre
-- RNG champion
-- RNG rôle
-- RNG stuff
-- RNG runes
-- RNG summoners
-- filtres `SR / ARAM / Fun / Troll`
-- boutons :
-  - reroll rôle
-  - reroll stuff
-  - reroll runes
-  - reroll summoners
-- son de case opening + panneau de gestion du son
-- images champions, items, runes et summoners
-- champion result avec une image plus propre
-- footer très sérieux : `dev a la zeub par nyeko`
+- champion RNG
+- rôle RNG
+- stuff RNG depuis le pool global d’items
+- summoners RNG depuis le pool global
+- runes RNG depuis le pool global
+- aucune cohérence volontaire entre champion, rôle, items, runes ou summoners
+
+Donc oui, un champion AP peut finir avec des items AD.  
+Oui, un ADC peut finir avec un build de tank.  
+Oui, c’est débile. C’est le but.
+
+## Modes
+
+- `SR` : build un minimum logique.
+- `ARAM` : adapté au bordel de l’ARAM.
+- `Fun` : off-meta jouable.
+- `Random` : full chaos, tout est aléatoire.
+
+## Boutons
+
+- Reroll rôle
+- Reroll stuff
+- Reroll runes
+- Reroll summoners
 
 ## Installation
 
@@ -35,22 +41,17 @@ npm install
 npm run build
 ```
 
-Le build télécharge automatiquement les assets utiles depuis Riot Data Dragon puis génère :
+Le build télécharge les assets depuis Riot Data Dragon et génère :
 
 ```txt
 dist/
 ```
 
-C’est ce dossier que Netlify doit publier.
-
-## Déploiement Netlify
+## Netlify
 
 - Build command : `npm run build`
 - Publish directory : `dist`
 
-## Rappel de survie
+## Message important
 
-- `SR` : tentative de build cohérente.
-- `ARAM` : builds et summoners orientés ARAM.
-- `Fun` : off-meta mais encore jouable.
-- `Troll` : tu cherches la bagarre avec ton équipe.
+Si tu joues ça en ranked, ce n’est plus un site web, c’est une preuve contre toi.

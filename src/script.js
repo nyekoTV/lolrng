@@ -1,5 +1,14 @@
 const champions = window.CHAMPIONS_DATA || [];
-const buildData = window.GAME_DATA || { roleConfigs: {}, items: {}, summoners: {}, runes: {}, runeStyles: {}, roleOrder: [], modeOrder: [] };
+const buildData = window.GAME_DATA || {
+  roleConfigs: {},
+  items: {},
+  summoners: {},
+  runes: {},
+  runeStyles: {},
+  roleOrder: [],
+  modeOrder: [],
+  globalPools: { itemIds: [], summonerIds: [], runeIds: [], runeStyleIds: [] }
+};
 
 const rarityRates = [
   { rarity: "common", chance: 39 },
@@ -48,6 +57,18 @@ let spinning = false;
 
 function randomItem(array) {
   return array[Math.floor(Math.random() * array.length)];
+}
+
+function shuffle(array) {
+  return [...array].sort(() => Math.random() - 0.5);
+}
+
+function randomDistinctValues(array, amount) {
+  return shuffle(array).slice(0, amount);
+}
+
+function isRandomMode() {
+  return getActiveMode() === "Random";
 }
 
 function pickRarity() {
@@ -191,18 +212,58 @@ function stopCaseSoundSoftly() {
 }
 
 function pickItems(roleConfig) {
+  if (isRandomMode()) {
+    const itemIds = buildData.globalPools?.itemIds?.length
+      ? buildData.globalPools.itemIds
+      : Object.keys(buildData.items || {});
+
+    return randomDistinctValues(itemIds, 6)
+      .map((id) => buildData.items[id])
+      .filter(Boolean);
+  }
+
   const modePool = getModePool(roleConfig);
   const presetIds = randomItem(modePool.itemPresets || []);
   return (presetIds || []).map((id) => buildData.items[id]).filter(Boolean);
 }
 
 function pickSummoners(roleConfig) {
+  if (isRandomMode()) {
+    const summonerIds = buildData.globalPools?.summonerIds?.length
+      ? buildData.globalPools.summonerIds
+      : Object.keys(buildData.summoners || {});
+
+    return randomDistinctValues(summonerIds, 2)
+      .map((id) => buildData.summoners[id])
+      .filter(Boolean);
+  }
+
   const modePool = getModePool(roleConfig);
   const comboIds = randomItem(modePool.summonerCombos || []);
   return (comboIds || []).map((id) => buildData.summoners[id]).filter(Boolean);
 }
 
 function pickRunePage(roleConfig) {
+  if (isRandomMode()) {
+    const runeIds = buildData.globalPools?.runeIds?.length
+      ? buildData.globalPools.runeIds
+      : Object.keys(buildData.runes || {});
+    const styleIds = buildData.globalPools?.runeStyleIds?.length
+      ? buildData.globalPools.runeStyleIds
+      : Object.keys(buildData.runeStyles || {});
+
+    const pickedRuneIds = randomDistinctValues(runeIds, 6);
+    const pickedStyleIds = randomDistinctValues(styleIds, 2);
+
+    return {
+      label: "Full Random — aucune logique",
+      primaryStyle: buildData.runeStyles[pickedStyleIds[0]],
+      secondaryStyle: buildData.runeStyles[pickedStyleIds[1]] || buildData.runeStyles[pickedStyleIds[0]],
+      primaryRunes: pickedRuneIds.slice(0, 4).map((id) => buildData.runes[id]).filter(Boolean),
+      secondaryRunes: pickedRuneIds.slice(4, 6).map((id) => buildData.runes[id]).filter(Boolean)
+    };
+  }
+
   const modePool = getModePool(roleConfig);
   const runePage = randomItem(modePool.runePages || []);
   if (!runePage) return null;

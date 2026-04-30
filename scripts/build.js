@@ -12,7 +12,7 @@ const runesDir = path.join(distDir, "assets", "runes");
 const runeStylesDir = path.join(distDir, "assets", "runes", "styles");
 const rolesDir = path.join(distDir, "assets", "roles");
 
-const MODE_ORDER = ["SR", "ARAM", "Fun", "Troll"];
+const MODE_ORDER = ["SR", "ARAM", "Fun", "Random"];
 const RARITY_ORDER = ["common", "rare", "epic", "legendary", "mythic"];
 const RARITY_LABELS = {
   common: "Commun",
@@ -23,7 +23,7 @@ const RARITY_LABELS = {
 };
 
 const mode = (itemPresets, summonerCombos, runePages) => ({ itemPresets, summonerCombos, runePages });
-const modes = (SR, ARAM, Fun, Troll) => ({ SR, ARAM, Fun, Troll });
+const modes = (SR, ARAM, Fun, Random) => ({ SR, ARAM, Fun, Random });
 
 const ROLE_CONFIGS = {
   "Top": {
@@ -48,7 +48,7 @@ const ROLE_CONFIGS = {
       mode(
         [["3006", "3046", "3085", "3031", "3036", "3094"], ["3020", "6655", "3089", "3157", "3135", "4629"], ["3158", "2065", "6617", "3504", "6616", "3107"]],
         [["SummonerMana", "SummonerTeleport"], ["SummonerBarrier", "SummonerHeal"], ["SummonerHaste", "SummonerBoost"]],
-        [{ label: "Troll — Spellbook", primaryStyle: "8300", secondaryStyle: "8100", primary: ["8351", "8306", "8321", "8347"], secondary: ["8143", "8105"] }, { label: "Troll — Predator", primaryStyle: "8100", secondaryStyle: "8300", primary: ["8124", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
+        [{ label: "Random — Spellbook", primaryStyle: "8300", secondaryStyle: "8100", primary: ["8351", "8306", "8321", "8347"], secondary: ["8143", "8105"] }, { label: "Random — Predator", primaryStyle: "8100", secondaryStyle: "8300", primary: ["8124", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
       )
     )
   },
@@ -74,7 +74,7 @@ const ROLE_CONFIGS = {
       mode(
         [["3020", "6655", "3089", "3135", "3157", "4629"], ["3158", "6617", "3504", "6616", "3107", "3222"], ["3006", "3031", "3046", "3085", "3036", "3072"]],
         [["SummonerBarrier", "SummonerMana"], ["SummonerHeal", "SummonerBoost"], ["SummonerHaste", "SummonerSmite"]],
-        [{ label: "Troll — Spellbook", primaryStyle: "8300", secondaryStyle: "8200", primary: ["8351", "8306", "8345", "8347"], secondary: ["8210", "8236"] }, { label: "Troll — Hail of Blades", primaryStyle: "8100", secondaryStyle: "8300", primary: ["9923", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
+        [{ label: "Random — Spellbook", primaryStyle: "8300", secondaryStyle: "8200", primary: ["8351", "8306", "8345", "8347"], secondary: ["8210", "8236"] }, { label: "Random — Hail of Blades", primaryStyle: "8100", secondaryStyle: "8300", primary: ["9923", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
       )
     )
   },
@@ -100,7 +100,7 @@ const ROLE_CONFIGS = {
       mode(
         [["3047", "3068", "3075", "3065", "3083", "4401"], ["3158", "6617", "3504", "6616", "3107", "3222"], ["3006", "3031", "3046", "3085", "3036", "3072"]],
         [["SummonerTeleport", "SummonerMana"], ["SummonerBarrier", "SummonerHeal"], ["SummonerHaste", "SummonerBoost"]],
-        [{ label: "Troll — Glacial", primaryStyle: "8300", secondaryStyle: "8400", primary: ["8351", "8306", "8345", "8347"], secondary: ["8473", "8453"] }, { label: "Troll — Dark Harvest", primaryStyle: "8100", secondaryStyle: "8300", primary: ["8128", "8139", "8138", "8106"], secondary: ["8304", "8347"] }]
+        [{ label: "Random — Glacial", primaryStyle: "8300", secondaryStyle: "8400", primary: ["8351", "8306", "8345", "8347"], secondary: ["8473", "8453"] }, { label: "Random — Dark Harvest", primaryStyle: "8100", secondaryStyle: "8300", primary: ["8128", "8139", "8138", "8106"], secondary: ["8304", "8347"] }]
       )
     )
   },
@@ -126,7 +126,7 @@ const ROLE_CONFIGS = {
       mode(
         [["3068", "3111", "3075", "3065", "3083", "4401"], ["3158", "6617", "3504", "6616", "3107", "3222"], ["3020", "6655", "3157", "3089", "3135", "4629"]],
         [["SummonerMana", "SummonerHeal"], ["SummonerBarrier", "SummonerBoost"], ["SummonerHaste", "SummonerTeleport"]],
-        [{ label: "Troll — Spellbook", primaryStyle: "8300", secondaryStyle: "8400", primary: ["8351", "8306", "8345", "8347"], secondary: ["8473", "8453"] }, { label: "Troll — Predator", primaryStyle: "8100", secondaryStyle: "8300", primary: ["8124", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
+        [{ label: "Random — Spellbook", primaryStyle: "8300", secondaryStyle: "8400", primary: ["8351", "8306", "8345", "8347"], secondary: ["8473", "8453"] }, { label: "Random — Predator", primaryStyle: "8100", secondaryStyle: "8300", primary: ["8124", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
       )
     )
   },
@@ -152,7 +152,7 @@ const ROLE_CONFIGS = {
       mode(
         [["3020", "6655", "3157", "3089", "3135", "4629"], ["3006", "3031", "3046", "3085", "3036", "3072"], ["3068", "3111", "3075", "3065", "3083", "4401"]],
         [["SummonerMana", "SummonerBarrier"], ["SummonerHeal", "SummonerBoost"], ["SummonerTeleport", "SummonerHaste"]],
-        [{ label: "Troll — Glacial", primaryStyle: "8300", secondaryStyle: "8200", primary: ["8351", "8306", "8345", "8347"], secondary: ["8210", "8236"] }, { label: "Troll — Hail of Blades", primaryStyle: "8100", secondaryStyle: "8300", primary: ["9923", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
+        [{ label: "Random — Glacial", primaryStyle: "8300", secondaryStyle: "8200", primary: ["8351", "8306", "8345", "8347"], secondary: ["8210", "8236"] }, { label: "Random — Hail of Blades", primaryStyle: "8100", secondaryStyle: "8300", primary: ["9923", "8143", "8138", "8105"], secondary: ["8304", "8347"] }]
       )
     )
   }
@@ -307,9 +307,18 @@ async function build() {
   const allRequestedItemIds = unique(Object.values(ROLE_CONFIGS).flatMap((role) => MODE_ORDER.flatMap((m) => role.modes[m].itemPresets.flat()))).map(String);
   const availableItemIds = new Set(Object.keys(itemPayload.data || {}).map(String));
   const fallbackItemIds = unique(["3047", "3111", "3158", "3006", "3078", "3071", "3053", "3068", "3065", "3075", "6655", "6653", "3157", "3089", "3135", "6672", "3031", "3046", "3036", "3072", "3190", "3504", "6617", "3107", "2065", "3222", "4629", "3094", "3124", "3153", "4401", "3009"]).filter((id) => availableItemIds.has(id));
-  const finalItemIds = unique([...allRequestedItemIds.filter((id) => availableItemIds.has(id)), ...fallbackItemIds]);
 
-  console.log(`🛒 Téléchargement de ${finalItemIds.length} images d'items...`);
+  const randomItemIds = Object.entries(itemPayload.data || {})
+    .filter(([id, item]) => {
+      const maps = item?.maps || {};
+      const isOnKnownMap = maps["11"] || maps["12"] || maps["21"] || maps["22"] || maps["30"];
+      return item?.image?.full && item?.name && item?.gold?.purchasable === true && isOnKnownMap;
+    })
+    .map(([id]) => String(id));
+
+  const finalItemIds = unique([...randomItemIds, ...allRequestedItemIds.filter((id) => availableItemIds.has(id)), ...fallbackItemIds]);
+
+  console.log(`🛒 Téléchargement de ${finalItemIds.length} images d'items, dont le pool Random complet...`);
   const items = {};
   for (const itemId of finalItemIds) {
     const item = itemPayload.data[itemId];
@@ -321,12 +330,16 @@ async function build() {
   const allRequestedSummonerIds = unique(Object.values(ROLE_CONFIGS).flatMap((role) => MODE_ORDER.flatMap((m) => role.modes[m].summonerCombos.flat()))).map(String);
   const summonerEntries = Object.values(summonerPayload.data || {});
   const availableSummonerIds = new Set(summonerEntries.map((spell) => String(spell.id)));
+  const randomSummonerIds = summonerEntries
+    .filter((spell) => spell?.image?.full && spell?.name && !String(spell.id).toLowerCase().includes("placeholder"))
+    .map((spell) => String(spell.id));
+  const finalSummonerIds = unique([...randomSummonerIds, ...allRequestedSummonerIds.filter((id) => availableSummonerIds.has(id))]);
   const summoners = {};
 
-  console.log("✨ Téléchargement des sorts d'invocateur...");
+  console.log(`✨ Téléchargement de ${finalSummonerIds.length} sorts d'invocateur...`);
   for (const spell of summonerEntries) {
     const spellId = String(spell.id);
-    if (!allRequestedSummonerIds.includes(spellId)) continue;
+    if (!finalSummonerIds.includes(spellId)) continue;
     if (!spell?.image?.full) continue;
     await downloadFile(`https://ddragon.leagueoflegends.com/cdn/${latestVersion}/img/spell/${spell.image.full}`, path.join(summonersDir, `${spellId}.png`));
     summoners[spellId] = { id: spellId, name: spell.name, subtitle: "Sort d'invocateur", image: `assets/summoners/${spellId}.png` };
@@ -335,19 +348,23 @@ async function build() {
   const { runeMap, styleMap } = buildRuneMaps(runePayload);
   const requestedStyleIds = unique(Object.values(ROLE_CONFIGS).flatMap((role) => MODE_ORDER.flatMap((m) => role.modes[m].runePages.flatMap((page) => [page.primaryStyle, page.secondaryStyle])))).map(String);
   const requestedRuneIds = unique(Object.values(ROLE_CONFIGS).flatMap((role) => MODE_ORDER.flatMap((m) => role.modes[m].runePages.flatMap((page) => [...page.primary, ...page.secondary])))).map(String);
+  const randomStyleIds = Object.keys(styleMap);
+  const randomRuneIds = Object.keys(runeMap);
+  const finalStyleIds = unique([...randomStyleIds, ...requestedStyleIds]);
+  const finalRuneIds = unique([...randomRuneIds, ...requestedRuneIds]);
 
-  console.log("🔮 Téléchargement des styles de runes...");
+  console.log(`🔮 Téléchargement de ${finalStyleIds.length} styles de runes...`);
   const runeStyles = {};
-  for (const styleId of requestedStyleIds) {
+  for (const styleId of finalStyleIds) {
     const style = styleMap[styleId];
     if (!style) continue;
     await downloadFile(`https://ddragon.leagueoflegends.com/cdn/img/${style.iconSource}`, path.join(runeStylesDir, `${styleId}.png`));
     runeStyles[styleId] = { id: styleId, name: style.name, subtitle: "Style de rune", image: `assets/runes/styles/${styleId}.png` };
   }
 
-  console.log("🔯 Téléchargement des runes...");
+  console.log(`🔯 Téléchargement de ${finalRuneIds.length} runes...`);
   const runes = {};
-  for (const runeId of requestedRuneIds) {
+  for (const runeId of finalRuneIds) {
     const rune = runeMap[runeId];
     if (!rune) continue;
     await downloadFile(`https://ddragon.leagueoflegends.com/cdn/img/${rune.iconSource}`, path.join(runesDir, `${runeId}.png`));
@@ -377,7 +394,8 @@ async function build() {
   const championDataJs = `window.CHAMPIONS_DATA = ${JSON.stringify(champions, null, 2)};\nwindow.CHAMPIONS_META = ${JSON.stringify({ version: latestVersion, rarityOrder: RARITY_ORDER }, null, 2)};\n`;
   await fs.writeFile(path.join(distDir, "champion-data.js"), championDataJs, "utf8");
 
-  const gameDataJs = `window.GAME_DATA = ${JSON.stringify({ version: latestVersion, modeOrder: MODE_ORDER, roleOrder, roleConfigs, items, summoners, runes, runeStyles }, null, 2)};\n`;
+  const globalPools = { itemIds: finalItemIds, summonerIds: finalSummonerIds, runeIds: finalRuneIds, runeStyleIds: finalStyleIds };
+  const gameDataJs = `window.GAME_DATA = ${JSON.stringify({ version: latestVersion, modeOrder: MODE_ORDER, roleOrder, roleConfigs, items, summoners, runes, runeStyles, globalPools }, null, 2)};\n`;
   await fs.writeFile(path.join(distDir, "game-data.js"), gameDataJs, "utf8");
 
   console.log("✅ Build terminé. Dossier à publier : dist/");
