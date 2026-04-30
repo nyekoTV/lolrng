@@ -1,82 +1,92 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Roulette RNG façon coffre CS pour champions League of Legends avec tirage du rôle." />
   <title>LoL Roulette RNG</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="background-orb orb-one"></div>
-  <div class="background-orb orb-two"></div>
+  <div class="page-bg"></div>
 
   <main class="app">
-    <header class="topbar">
-      <div class="brand">
-        <span class="brand-icon">◆</span>
-        <div>
-          <strong>LOL RNG</strong>
-          <small>Local Case Opening</small>
-        </div>
-      </div>
-
-      <div class="stats">
-        <span>💎 2 860</span>
-        <span>🟡 12 450</span>
-      </div>
+    <header class="hero">
+      <p class="eyebrow">Ouverture du coffre</p>
+      <h1>Roulette RNG LoL</h1>
+      <p class="subtitle">Ouvre le coffre, tire un champion, puis laisse le destin choisir ton rôle.</p>
     </header>
 
-    <section class="hero">
-      <p class="eyebrow">Ouverture du coffre</p>
-      <h1>Roulette RNG</h1>
-      <p class="subtitle">Tire un champion et un rôle aléatoire.</p>
+    <section class="panel sound-panel" aria-label="Gestion du son">
+      <div>
+        <h2>Son</h2>
+        <p>Gère le bruit d’ouverture sans exploser tes oreilles.</p>
+      </div>
+
+      <div class="sound-controls">
+        <label class="toggle">
+          <input id="soundToggle" type="checkbox" checked />
+          <span>Son activé</span>
+        </label>
+
+        <label class="volume-control">
+          Volume
+          <input id="volumeRange" type="range" min="0" max="100" value="45" />
+        </label>
+
+        <button id="testSoundBtn" class="small-btn" type="button">Tester</button>
+      </div>
     </section>
 
-    <section class="content-grid">
-      <aside class="panel rarities-panel">
-        <h2>Raretés</h2>
-        <div class="rarity-line common"><span></span> Commun <strong>39%</strong></div>
-        <div class="rarity-line rare"><span></span> Rare <strong>30%</strong></div>
-        <div class="rarity-line epic"><span></span> Épique <strong>20%</strong></div>
-        <div class="rarity-line legendary"><span></span> Légendaire <strong>10%</strong></div>
-        <div class="rarity-line mythic"><span></span> Mythique <strong>1%</strong></div>
-      </aside>
+    <section class="rarity-bar" aria-label="Raretés">
+      <div class="rarity-pill common">Commun <span>39%</span></div>
+      <div class="rarity-pill rare">Rare <span>30%</span></div>
+      <div class="rarity-pill epic">Épique <span>20%</span></div>
+      <div class="rarity-pill legendary">Légendaire <span>10%</span></div>
+      <div class="rarity-pill mythic">Mythique <span>1%</span></div>
+    </section>
 
-      <section class="roulette-card">
-        <div class="roulette-header">
-          <div>
-            <h2>Coffre des champions</h2>
-            <p id="versionLabel">Images locales générées au build</p>
+    <section class="roulette-card">
+      <div class="roulette-frame" id="rouletteFrame">
+        <div class="selector-line" aria-hidden="true"></div>
+        <div class="selector-arrow" aria-hidden="true">▼</div>
+        <div class="track" id="track"></div>
+      </div>
+
+      <div class="chest-wrap" aria-hidden="true">
+        <div class="glow"></div>
+        <div class="chest">
+          <div class="chest-lid"></div>
+          <div class="chest-body"></div>
+          <div class="chest-lock">◆</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="openBtn" class="open-btn" type="button">Ouvrir le coffre</button>
+      </div>
+
+      <div class="result-card" id="resultCard" hidden>
+        <img id="resultImage" src="" alt="" />
+        <div>
+          <p class="result-label">Résultat</p>
+          <h2 id="resultName"></h2>
+          <p id="resultTitle"></p>
+          <div class="result-tags">
+            <span id="resultRarity"></span>
+            <span id="resultRole"></span>
           </div>
-          <button id="shufflePreviewBtn" class="secondary-button" type="button">Mélanger l'aperçu</button>
         </div>
-
-        <div class="roulette-wrapper" id="rouletteWrapper" aria-label="Roulette de champions">
-          <div class="selector" aria-hidden="true"></div>
-          <div class="track" id="track"></div>
-        </div>
-
-        <div class="chest-zone" aria-hidden="true">
-          <div class="light-beam"></div>
-          <div class="chest">
-            <div class="chest-lid"></div>
-            <div class="chest-body"></div>
-            <div class="chest-gem">◆</div>
-          </div>
-        </div>
-
-        <div class="controls">
-          <button id="openBtn" class="primary-button" type="button">Ouvrir le coffre</button>
-          <div class="result" id="result">
-            <span class="muted">Clique sur le bouton pour lancer le tirage.</span>
-          </div>
-        </div>
-      </section>
+      </div>
     </section>
   </main>
 
-  <script src="champions.generated.js"></script>
+  <footer>
+    dev a la zeub par nyeko
+  </footer>
+
+  <audio id="caseAudio" src="assets/sounds/case-opening.wav" preload="auto"></audio>
+
+  <script src="champion-data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

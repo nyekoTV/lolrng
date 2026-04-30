@@ -1,36 +1,72 @@
-# LoL Roulette RNG — Netlify ready
+# LoL Roulette RNG — dev a la zeub edition
 
-Mini-site statique : roulette RNG façon ouverture de coffre CS, avec images des champions League of Legends et tirage aléatoire du rôle.
+Bienvenue dans le projet le plus sérieux du monde : une roulette RNG pour tirer un champion LoL et un rôle.
 
-## Déploiement Netlify via GitHub
+Est-ce utile ? Pas vraiment.  
+Est-ce stylé ? Un peu.  
+Est-ce que ça peut ruiner une draft entre potes ? Absolument.
 
-1. Mets ce dossier dans un repo GitHub.
-2. Sur Netlify : Add new site > Import an existing project.
-3. Sélectionne ton repo.
-4. Netlify lit automatiquement `netlify.toml` :
-   - Build command : `npm run build`
-   - Publish directory : `dist`
-5. Déploie.
+## Ce que ça fait
 
-Le build télécharge automatiquement les images des champions depuis Riot Data Dragon et les place dans `dist/assets/champions/`.
+- Roulette façon ouverture de coffre.
+- Images des champions téléchargées automatiquement pendant le build.
+- RNG du champion.
+- RNG du rôle : Top, Jungle, Mid, Bot / ADC, Support.
+- Son de case opening.
+- Contrôle du son : activer, couper, volume, test.
+- Footer obligatoire : `dev a la zeub par nyeko`.
 
-## Test en local
+## Installation
+
+```bash
+npm install
+```
+
+## Lancer le build
 
 ```bash
 npm run build
 ```
 
-Puis ouvre :
+Le dossier généré sera :
 
-```text
-dist/index.html
+```txt
+dist/
 ```
 
-## Déploiement manuel Netlify
+C'est ce dossier que Netlify doit publier.
 
-Si tu veux faire un drag-and-drop manuel sur Netlify :
+## Déploiement Netlify
 
-1. Lance `npm run build` en local.
-2. Glisse uniquement le dossier `dist` dans Netlify.
+La méthode propre :
 
-Attention : si tu glisses le dossier source complet, Netlify ne lance pas le build en déploiement manuel.
+1. Mets le projet sur GitHub.
+2. Va sur Netlify.
+3. Import ton repo.
+4. Netlify lit normalement `netlify.toml` tout seul.
+5. Vérifie quand même :
+
+```txt
+Build command: npm run build
+Publish directory: dist
+```
+
+## Tester en local
+
+```bash
+npm run dev
+```
+
+Si ça marche pas, c'est probablement pas la faute de Teemo, mais on va dire que si.
+
+## Notes importantes
+
+Le tirage est fait côté navigateur. Pour un vrai système de loot sérieux, il faudrait faire le RNG côté serveur.
+
+Mais ici, c'est pour le fun. Donc ça passe.
+
+## Crédits
+
+Développé avec beaucoup trop de confiance et pas assez de sommeil.
+
+**dev a la zeub par nyeko**

@@ -1,12 +1,18 @@
 {
-  "name": "lol-roulette-rng-netlify",
-  "version": "1.0.0",
+  "name": "lol-roulette-rng-netlify-ready",
+  "version": "3.0.0",
+  "description": "Roulette RNG façon case opening, prête pour Netlify.",
   "private": true,
-  "description": "Roulette RNG façon coffre CS pour champions League of Legends, déployable sur Netlify.",
+  "type": "module",
   "scripts": {
-    "build": "node scripts/build.js"
+    "build": "node scripts/build.js",
+    "dev": "npm run build && npx serve dist",
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\""
   },
   "engines": {
     "node": ">=18"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
   }
 }

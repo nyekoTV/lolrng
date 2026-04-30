@@ -1,52 +1,47 @@
-const champions = Array.isArray(window.CHAMPIONS) ? window.CHAMPIONS : [];
-
-const roles = [
-  { name: 'Top', icon: '🛡️' },
-  { name: 'Jungle', icon: '🌲' },
-  { name: 'Mid', icon: '✨' },
-  { name: 'Bot / ADC', icon: '🏹' },
-  { name: 'Support', icon: '💫' }
-];
+const champions = window.CHAMPIONS_DATA || [];
 
 const rarityRates = [
-  { rarity: 'common', chance: 39 },
-  { rarity: 'rare', chance: 30 },
-  { rarity: 'epic', chance: 20 },
-  { rarity: 'legendary', chance: 10 },
-  { rarity: 'mythic', chance: 1 }
+  { rarity: "common", chance: 39 },
+  { rarity: "rare", chance: 30 },
+  { rarity: "epic", chance: 20 },
+  { rarity: "legendary", chance: 10 },
+  { rarity: "mythic", chance: 1 }
 ];
 
-const rarityLabels = {
-  common: 'Commun',
-  rare: 'Rare',
-  epic: 'Épique',
-  legendary: 'Légendaire',
-  mythic: 'Mythique'
-};
+const roles = ["Top", "Jungle", "Mid", "Bot / ADC", "Support"];
 
-const track = document.querySelector('#track');
-const wrapper = document.querySelector('#rouletteWrapper');
-const openBtn = document.querySelector('#openBtn');
-const shufflePreviewBtn = document.querySelector('#shufflePreviewBtn');
-const result = document.querySelector('#result');
-const versionLabel = document.querySelector('#versionLabel');
+const track = document.querySelector("#track");
+const rouletteFrame = document.querySelector("#rouletteFrame");
+const openBtn = document.querySelector("#openBtn");
+const resultCard = document.querySelector("#resultCard");
+const resultImage = document.querySelector("#resultImage");
+const resultName = document.querySelector("#resultName");
+const resultTitle = document.querySelector("#resultTitle");
+const resultRarity = document.querySelector("#resultRarity");
+const resultRole = document.querySelector("#resultRole");
+const caseAudio = document.querySelector("#caseAudio");
+const soundToggle = document.querySelector("#soundToggle");
+const volumeRange = document.querySelector("#volumeRange");
+const testSoundBtn = document.querySelector("#testSoundBtn");
 
-let isSpinning = false;
+let spinning = false;
 
-function randomItem(items) {
-  return items[Math.floor(Math.random() * items.length)];
+function randomItem(array) {
+  return array[Math.floor(Math.random() * array.length)];
 }
 
 function pickRarity() {
-  const roll = Math.random() * 100;
+  const random = Math.random() * 100;
   let total = 0;
 
   for (const rate of rarityRates) {
     total += rate.chance;
-    if (roll <= total) return rate.rarity;
+    if (random <= total) {
+      return rate.rarity;
+    }
   }
 
-  return 'common';
+  return "common";
 }
 
 function pickChampion() {
@@ -60,120 +55,135 @@ function pickRole() {
 }
 
 function createChampionCard(champion) {
-  const card = document.createElement('article');
+  const card = document.createElement("article");
   card.className = `champion-card ${champion.rarity}`;
 
-  const safeTitle = champion.title || 'Champion';
-
   card.innerHTML = `
-    <img src="${champion.image}" alt="${champion.name}" draggable="false" />
-    <div class="champion-meta">
-      <h3>${champion.name}</h3>
-      <p>${safeTitle}</p>
-      <div class="badge"><span>${rarityLabels[champion.rarity]}</span></div>
+    <img src="${champion.image}" alt="${champion.name}" loading="eager">
+    <div class="card-overlay">
+      <strong>${champion.name}</strong>
+      <small>${champion.title}</small>
+      <em class="${champion.rarity}">${champion.rarityLabel}</em>
     </div>
   `;
 
   return card;
 }
 
-function fillPreview(amount = 26) {
-  track.innerHTML = '';
+function fillIdleRoulette() {
+  track.innerHTML = "";
 
-  for (let i = 0; i < amount; i++) {
+  if (!champions.length) {
+    track.innerHTML = `<p style="padding:24px;color:#f6d889;font-weight:900">Champion-data.js est absent. Lance npm run build.</p>`;
+    openBtn.disabled = true;
+    return;
+  }
+
+  for (let i = 0; i < 24; i++) {
     track.appendChild(createChampionCard(randomItem(champions)));
   }
-
-  track.style.transition = 'none';
-  track.style.transform = 'translateX(0)';
 }
 
-function buildSpinTrack(winner) {
-  track.innerHTML = '';
-
-  const winnerIndex = 72;
-  const totalCards = 92;
-  const items = [];
+function buildRoulette(winner) {
+  track.innerHTML = "";
+  const winnerIndex = 66;
+  const totalCards = 90;
 
   for (let i = 0; i < totalCards; i++) {
-    items.push(randomItem(champions));
-  }
-
-  items[winnerIndex] = winner;
-
-  for (const champion of items) {
+    const champion = i === winnerIndex ? winner : randomItem(champions);
     track.appendChild(createChampionCard(champion));
   }
 
   return winnerIndex;
 }
 
-function showResult(champion, role) {
-  result.innerHTML = `
-    <div class="result-title">Résultat du coffre</div>
-    <div class="result-main">
-      <span class="text-${champion.rarity}">${champion.name}</span>
-      <span class="role-pill">${role.icon} ${role.name}</span>
-    </div>
-    <div class="muted">Rareté : ${rarityLabels[champion.rarity]} · ${champion.title || 'Champion'}</div>
-  `;
-}
+function playCaseSound() {
+  if (!soundToggle.checked) return;
 
-function spin() {
-  if (isSpinning || champions.length === 0) return;
+  caseAudio.pause();
+  caseAudio.currentTime = 0;
+  caseAudio.volume = Number(volumeRange.value) / 100;
 
-  isSpinning = true;
-  openBtn.disabled = true;
-  shufflePreviewBtn.disabled = true;
-
-  result.innerHTML = '<span class="muted">Ouverture en cours...</span>';
-
-  const winner = pickChampion();
-  const role = pickRole();
-  const winnerIndex = buildSpinTrack(winner);
-
-  track.style.transition = 'none';
-  track.style.transform = 'translateX(0)';
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const winnerCard = track.children[winnerIndex];
-      const wrapperCenter = wrapper.offsetWidth / 2;
-      const cardCenter = winnerCard.offsetLeft + winnerCard.offsetWidth / 2;
-      const randomOffset = Math.floor(Math.random() * 34) - 17;
-      const finalX = wrapperCenter - cardCenter + randomOffset;
-
-      track.style.transition = 'transform 6.2s cubic-bezier(0.09, 0.76, 0.12, 1)';
-      track.style.transform = `translateX(${finalX}px)`;
-
-      window.setTimeout(() => {
-        showResult(winner, role);
-        openBtn.disabled = false;
-        shufflePreviewBtn.disabled = false;
-        isSpinning = false;
-      }, 6400);
-    });
+  caseAudio.play().catch(() => {
+    // Le navigateur peut bloquer si ce n'est pas lancé après une action utilisateur.
   });
 }
 
-function boot() {
-  if (champions.length === 0) {
-    openBtn.disabled = true;
-    shufflePreviewBtn.disabled = true;
-    result.innerHTML = '<span class="muted">Erreur : aucune donnée champion générée. Lance npm run build avant de déployer.</span>';
-    return;
-  }
-
-  if (window.DDRAGON_VERSION) {
-    versionLabel.textContent = `Images locales · Data Dragon ${window.DDRAGON_VERSION} · ${champions.length} champions`;
-  }
-
-  fillPreview();
+function stopCaseSoundSoftly() {
+  const fade = setInterval(() => {
+    if (caseAudio.volume > 0.05) {
+      caseAudio.volume = Math.max(0, caseAudio.volume - 0.05);
+    } else {
+      caseAudio.pause();
+      caseAudio.currentTime = 0;
+      caseAudio.volume = Number(volumeRange.value) / 100;
+      clearInterval(fade);
+    }
+  }, 80);
 }
 
-openBtn.addEventListener('click', spin);
-shufflePreviewBtn.addEventListener('click', () => {
-  if (!isSpinning) fillPreview();
+function showResult(winner, role) {
+  resultImage.src = winner.image;
+  resultImage.alt = winner.name;
+  resultName.textContent = winner.name;
+  resultTitle.textContent = winner.title || "Champion débloqué";
+  resultRarity.textContent = `Rareté : ${winner.rarityLabel}`;
+  resultRarity.className = winner.rarity;
+  resultRole.textContent = `Rôle RNG : ${role}`;
+  resultCard.hidden = false;
+}
+
+function spin() {
+  if (spinning || !champions.length) return;
+
+  spinning = true;
+  openBtn.disabled = true;
+  resultCard.hidden = true;
+
+  const winner = pickChampion();
+  const role = pickRole();
+  const winnerIndex = buildRoulette(winner);
+
+  track.style.transition = "none";
+  track.style.transform = "translateX(0px)";
+
+  playCaseSound();
+
+  requestAnimationFrame(() => {
+    const winnerCard = track.children[winnerIndex];
+    const frameCenter = rouletteFrame.offsetWidth / 2;
+    const cardCenter = winnerCard.offsetLeft + winnerCard.offsetWidth / 2;
+    const randomOffset = Math.floor(Math.random() * 36) - 18;
+    const finalTranslate = frameCenter - cardCenter + randomOffset;
+
+    track.style.transition = "transform 6s cubic-bezier(0.08, 0.78, 0.14, 1)";
+    track.style.transform = `translateX(${finalTranslate}px)`;
+
+    setTimeout(() => {
+      showResult(winner, role);
+      stopCaseSoundSoftly();
+      openBtn.disabled = false;
+      spinning = false;
+    }, 6200);
+  });
+}
+
+openBtn.addEventListener("click", spin);
+
+testSoundBtn.addEventListener("click", () => {
+  playCaseSound();
+  setTimeout(stopCaseSoundSoftly, 1600);
 });
 
-boot();
+volumeRange.addEventListener("input", () => {
+  caseAudio.volume = Number(volumeRange.value) / 100;
+});
+
+soundToggle.addEventListener("change", () => {
+  if (!soundToggle.checked) {
+    caseAudio.pause();
+    caseAudio.currentTime = 0;
+  }
+});
+
+fillIdleRoulette();
